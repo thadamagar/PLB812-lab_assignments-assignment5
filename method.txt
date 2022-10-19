@@ -1,0 +1,20 @@
+Generate Read Counts
+I follow the following steps for generating read counts
+1. I installed and used feature count package for read counts, by using following argument- featureCounts -a Bdistachyon.gtf -o count.out -T 8 /mnt/home/thadaraj/STARalignment/*.bam
+2. I get that count.out file to my desktop from hpcc using “sftp get”
+3. I copied txt from that count.out file to excel.
+
+
+
+Run the DESeq2 Pipeline
+I follow the following steps to run DESeq2 Pipeline
+1. I imported my read cont data into R using - dt <- read.csv("finalcounttable.csv")
+2. I activated my DESeq2 and and ggplot library
+3. I normalized my data using - Counts <- Counts[which(rowSums(Counts) >= 10),] which reduced the gene counts from 32389 to 25419.
+4. I assign the condition to create matrix using
+5. -  condition <- factor(c("t1","t1","t1","t1","t1","t1","t2","t2","t2","t2","t2","t2")) 
+6. - coldata <- data.frame(row.names = colnames(Counts), condition)
+7. - dds <- DESeq(dds)
+8. - res <- results(dds, contrast = c("condition","t1", "t2"))
+9. I created MA plot using the built in DESeq2 function - plotMA(results(dds, contrast = c ("condition", "t1","t2")), ylim = c(-2,2))
+10. I found there are 3070 total no. of gene that are differentially expressed and I found that using - sigs <- sigs[sigs$padj < 0.05,]
